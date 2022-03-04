@@ -29,11 +29,11 @@ use std::{env, result};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::TcpListener;
 
-use crate::models::BaseEntity::FrogienKey;
+use crate::models::BaseEntity::ForeignKey;
 
 use super::BaseEntity::{BaseEntity, InheritsProvider,NameProvider};
 
-pub async fn getCollection0<T1, T2>(item: &T1, cname: String) -> Vec<FrogienKey<T2>>
+pub async fn getCollection0<T1, T2>(item: &T1, cname: String) -> Vec<ForeignKey<T2>>
 where
     T1: InheritsProvider<BaseEntity>,
     T2: InheritsProvider<BaseEntity>,
@@ -55,7 +55,7 @@ where
 
     println!("{}", body);
     let v: Value = serde_json::from_str(body.as_str()).unwrap();
-    let mut res = Vec::<FrogienKey<T2>>::new();
+    let mut res = Vec::<ForeignKey<T2>>::new();
     match v {
         Value::Null => todo!(),
         Value::Bool(_) => todo!(),
@@ -68,7 +68,7 @@ where
                 match z {
                     Ok(_) => {
                         let zz = z.unwrap();
-                        res.push(FrogienKey {
+                        res.push(ForeignKey {
                             id: zz.get_base().id,
                             value: Some(Box::new(zz)),
                         })
@@ -101,9 +101,9 @@ macro_rules! new_struct {
 
     // throw on the last field
     ( ($parrent_name:tt) delmtr0 ($id:ident :oneToMany[$ty:ty,$chache_name:ident], $($next:tt)*) delmtr1 {$($output:tt)*} ) => {
-        new_struct!( ($parrent_name) delmtr0 ($($next)*) delmtr1 {$($output)* ($chache_name: Option<Vec<FrogienKey<$ty>>>)});
+        new_struct!( ($parrent_name) delmtr0 ($($next)*) delmtr1 {$($output)* ($chache_name: Option<Vec<ForeignKey<$ty>>>)});
         impl $parrent_name{
-            pub async fn $id(&mut self) -> &Vec<FrogienKey<$ty>> {
+            pub async fn $id(&mut self) -> &Vec<ForeignKey<$ty>> {
                 match self.$chache_name {
                     Some(_) => self.$chache_name.as_ref().unwrap(),
                     None => {

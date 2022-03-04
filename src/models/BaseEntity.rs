@@ -47,7 +47,7 @@ pub trait NameProvider {
     fn get_name() -> &'static str;
 }
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct FrogienKey<T: InheritsProvider<BaseEntity>> {
+pub struct ForeignKey<T: InheritsProvider<BaseEntity>> {
     pub id: i32,
     pub value: Option<Box<T>>,
 }

@@ -33,7 +33,7 @@ use std::{env, result};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::TcpListener;
 mod models;
-use models::BaseEntity::{BaseEntity,InheritsProvider,FrogienKey,HelloMacro, NameProvider};
+use models::BaseEntity::{BaseEntity,InheritsProvider,ForeignKey,HelloMacro, NameProvider};
 use models::Class::Class;
 
 

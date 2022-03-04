@@ -1,17 +1,14 @@
 use crate::new_struct;
 use crate::new_struct_with_impl;
-#[macro_use]
-use super::macros;
+
 use hello_macro_derive::HelloMacro;
 
 extern crate json;
-use parse_display::{Display, FromStr};
-use serde::de::{self, DeserializeOwned};
 use serde::{Deserialize, Serialize};
-use serde_json::{Result, Value};
-use std::{collections::HashMap, sync::RwLock};
 
-use super::BaseEntity::{BaseEntity, FrogienKey, HelloMacro, InheritsProvider, NameProvider};
+
+
+use super::BaseEntity::{BaseEntity, ForeignKey, HelloMacro, InheritsProvider, NameProvider};
 
 use super::macros::getCollection0;
 
@@ -35,9 +32,10 @@ new_struct_with_impl! {
 
 impl InheritsProvider<BaseEntity> for Class {
     fn get_base(&self) -> &BaseEntity {
-        return &self.base;
+        &self.base
     }
 }
+
 new_struct_with_impl! {
     #[derive(Serialize, Deserialize)]
     #[serde(rename_all = "camelCase")]
@@ -49,8 +47,9 @@ new_struct_with_impl! {
         image_url: Option<String>,
     }
 }
+
 impl InheritsProvider<BaseEntity> for Session {
     fn get_base(&self) -> &BaseEntity {
-        todo!()
+        &self.base
     }
 }
