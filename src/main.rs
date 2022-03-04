@@ -49,9 +49,7 @@ macro_rules! say_hello {
 async fn main() {
     BaseEntity::hello_macro();
     say_hello!();
-    let pp = typed_example(3).await;
-    let pp = typed_example_generic::<User2>(3);
-
+    
     let mut r: EntityManager<Class> = EntityManager::new();
     let mut idd = 2262;
     let mut class: &mut Class = r.get_by_async_id(&idd).await;
@@ -111,70 +109,6 @@ static App: Component<()> = |cx| {
 
     })
 };
-async fn typed_example0(i: i32) -> User {
-    let pp = format!(
-        "http://maslan.com/{class_name}/{class_id}",
-        class_name = "get_name",
-        class_id = i
-    );
-    let body = reqwest::get(pp.as_str())
-        .await
-        .unwrap()
-        .text()
-        .await
-        .unwrap();
-
-    let p = serde_json::from_str::<User>(body.as_str()).unwrap();
-
-    // Do things just like with any other Rust data structure.
-
-    return p;
-}
-
-async fn typed_example(i: i32) -> User2 {
-    let pp = format!("http://cs.karafsgym.com/v1/generic/User/3");
-    //let pp=format!("http://maslan.com/{class_name}/{class_id}",class_name="get_name" ,class_id=i);
-    let client = reqwest::Client::new();
-    let body = client
-        .get(pp.as_str())
-        .send()
-        .await
-        .unwrap()
-        .text()
-        .await
-        .unwrap();
-
-    println!("With text:\n{}", body);
-
-    let p = serde_json::from_slice::<User2>(body.as_bytes()).unwrap();
-
-    // Do things just like with any other Rust data structure.
-
-    println!("{}", p);
-
-    return p;
-}
-
-async fn typed_example_generic<T: de::DeserializeOwned>(i: i32) -> T
-where
-    T: Display,
-{
-    let pp = format!(
-        "http://maslan.com/{class_name}/{class_id}",
-        class_name = "get_name",
-        class_id = i
-    );
-    let body = fs::read_to_string("1.json").expect("Something went wrong reading the file");
-
-    let p = serde_json::from_slice::<T>(body.as_bytes()).unwrap();
-
-    // Do things just like with any other Rust data structure.
-    println!("{}", p);
-
-    return p;
-}
-
-
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 #[derive(Debug, Copy, Clone)]
@@ -183,15 +117,7 @@ struct User {
     base: BaseEntity,
 }
 
-#[derive(Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-#[derive(Debug, Clone, Display)]
-#[display("{base}-{phone_number}")]
-struct User2 {
-    #[serde(flatten)]
-    base: BaseEntity,
-    phone_number: String,
-}
+
 
 impl InheritsProvider<BaseEntity> for User {
     fn get_base(&self) -> &BaseEntity {
