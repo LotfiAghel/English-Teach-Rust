@@ -1,10 +1,4 @@
-# File-explorer with Rust and Dioxus
-
-This example shows how a Dioxus App can directly leverage system calls and libraries to bridge native functionality with the WebView renderer.
-
-![example](./image.png)
-
-
+This example at start copy form Dioxus sample 
 ## To run this example:
 
 ```
