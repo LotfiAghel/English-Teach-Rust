@@ -6,6 +6,7 @@
 //! This example is interesting because it's mixing filesystem operations and GUI, which is typically hard for UI to do.
 #![feature(trace_macros)]
 #[macro_use]
+
 use hello_macro_derive::HelloMacro;
 
 extern crate json;
@@ -176,9 +177,9 @@ where
         println!("{}", body);
         let deserialized_data = serde_json::from_str::<T2>(body.as_str()).unwrap();
         println!("{}", serde_json::to_string(&deserialized_data).unwrap());
-        self.data
-            .entry(deserialized_data.get_base().id)
-            .insert_entry(deserialized_data);
+        self.data.insert(deserialized_data.get_base().id,deserialized_data);
+            //.entry(deserialized_data.get_base().id)
+            //.insert_entry(deserialized_data);
 
         return self.data.get_mut(i).unwrap();
     }
